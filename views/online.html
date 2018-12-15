@@ -3,6 +3,7 @@
     <head>
         <title>Online</title>
         <link href="/css/online.css" rel="stylesheet" type="text/css">
+        <script src="/maps.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -17,16 +18,17 @@
     <body>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 left-col">
                     <h3>Fit Club</h3>
-                    <div id="map"></div>
-                    <a href="/">Go Offline</a>
+                    <div id="map" style="margin-bottom: 15px;"></div>
+                    <a href="/" style="margin-top: 15px;">Go Offline</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 right-col">
+                    <h3 style="text-align: center"> Hike-CORE! </h3>
                     <div class="chat">
-                        <ul id="messages"></ul>
-                        <form action="">
-                            <input id="m" autocomplete="off" /><button>Send</button>
+                        <ul id="messages" style="list-style-type: none;"></ul>
+                        <form action="" style="padding-top: 250px;">
+                            <input id="m" autocomplete="off" style="width: 80%;"/><button style="margin-left: 5px;">Send</button>
                         </form>
                     </div>
                 </div>
@@ -54,7 +56,7 @@
                 };
 
                 infoWindow.setPosition(pos);
-                infoWindow.setContent('Location found.');
+                infoWindow.setContent('Nya is online');
                 infoWindow.open(map);
                 map.setCenter(pos);
               }, function() {
@@ -76,20 +78,19 @@
         </script>
 
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-    $(function () {
-        var socket = io();
-        $('form').submit(function(){
-            socket.emit('chat message', $('#m').val());
-            $('#m').val('');
-            return false;
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+        $(function () {
+            var socket = io();
+            $('form').submit(function(){
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+            });
         });
-        socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
-        });
-    });
-    </script>
-  </body>
-  </body>
+        </script>
+    </body>
 </html>

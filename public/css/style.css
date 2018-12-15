@@ -1,17 +1,19 @@
-body, html {
-height: 100%;
+* {
+    text-align: center;
+    font-family: 'Handlee'
 }
-.bg {
-/* The image used
 
-background-image: url("/img3.jpg");
-*/
+.left-col {
+    height: 275px;
+    width: 50%;
+}
+.right-col {
+    margin-top: 225px;
+    font-size: 25px;
+}
 
-/* Full height */
-height: 100%;
-
-/* Center and scale the image nicely */
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
+.title {
+    font-size: 60px;
+    font-family: 'Handlee', cursive;
+    color: grey;
 }

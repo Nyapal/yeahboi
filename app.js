@@ -4,12 +4,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
 
-app.use(express.static(__dirname + '/public'));
-
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.engine('.html', require('ejs').__express);
-// app.set('views', __dirname + '/views');
-// app.set('view engine', 'html');
+app.use(express.static('public'))
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/views/index.html')

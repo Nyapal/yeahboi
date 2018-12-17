@@ -27,20 +27,30 @@
                     <h3 style="text-align: center"> Hike-CORE! </h3>
                     <div class="chat">
                         <ul id="messages" style="list-style-type: none;"></ul>
-                        <form action="" style="padding-top: 250px;">
+                        <form action="">
                             <input id="m" autocomplete="off" style="width: 80%;"/><button style="margin-left: 5px;">Send</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <script>
+         <script>
           // Note: This example requires that you consent to location sharing when
           // prompted by your browser. If you see the error "The Geolocation service
           // failed.", it means you probably did not give permission for the browser to
           // locate you.
+          let friends = [
+  //37°46'52.3"N 122°24'54.2"W
+  ['Anna', '37.781', '-122.425'],
+  ['Faith', '37.758', '-122.440'],
+  ['Betsy', '37.783', '-122.429'],
+  ['Stephanie', '37.757', '-122.415']
+  ];
+
+
           let map, infoWindow;
-          function initMap() {
+
+           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: -34.397, lng: 150.644},
               zoom: 6
@@ -56,9 +66,14 @@
                 };
 
                 infoWindow.setPosition(pos);
-                infoWindow.setContent('Nya is online');
+                infoWindow.setContent('You are online');
                 infoWindow.open(map);
                 map.setCenter(pos);
+
+                setTimeout(function () {
+                    setMarkers(map, friends)
+                }, 1400);
+
               }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
               });
@@ -68,6 +83,37 @@
             }
           }
 
+          function setMarkers(map, friends) {
+          let marker, i
+          for (i = 0; i < friends.length; i++) {
+              let name = friends[i][0]
+              let lat = friends[i][1]
+              let lng = friends[i][2]
+
+              let latAndLng = new google.maps.LatLng(lat, lng);
+
+              let marker = new google.maps.Marker({
+                  map: map,
+                  title: name,
+                  position: latAndLng,
+                  draggable: true,
+                  animation: google.maps.Animation.DROP
+              })
+              map.setCenter(marker.getPosition())
+
+              let content = '<p>' + name + ' is online </p>'
+
+              let infowindow = new google.maps.InfoWindow()
+
+              google.maps.event.addListener(marker, 'click', (function(marker, content, infowindow) {
+                  return function() {
+                      infowindow.setContent(content);
+                      infowindow.open(map,marker);
+                  };
+              })(marker, content, infowindow));
+          }
+          }
+
           function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(browserHasGeolocation ?
@@ -75,8 +121,8 @@
                                   'Error: Your browser doesn\'t support geolocation.');
             infoWindow.open(map);
           }
-        </script>
 
+        </script>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
